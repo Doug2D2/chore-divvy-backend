@@ -10,10 +10,21 @@ CREATE TABLE users (
 CREATE TABLE categories (
     id INT(10) NOT NULL AUTO_INCREMENT,
     category_name VARCHAR(255) NOT NULL,
-    user_id INT(10),
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    PRIMARY KEY (id)
 );
+
+CREATE TABLE users_categories (
+	user_id INT(10),
+    category_id INT(10),
+    PRIMARY KEY(user_id, category_id)
+);
+
+CREATE TABLE frequency (
+    id INT(10) NOT NULL AUTO_INCREMENT,
+    frequency_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 
 CREATE TABLE chores (
     id INT(10) NOT NULL AUTO_INCREMENT,
@@ -27,10 +38,4 @@ CREATE TABLE chores (
     PRIMARY KEY (id),
     FOREIGN KEY (frequency_id) REFERENCES frequency(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
-);
-
-CREATE TABLE frequency (
-    id INT(10) NOT NULL AUTO_INCREMENT,
-    frequency_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
 );
