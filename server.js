@@ -6,10 +6,11 @@ const logger = require('./logger');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+require('dotenv').config();
 
 const app = express();
 
-app.use(session({ secret: 'cats' }));
+app.use(session({ secret: process.env.SECRET , resave: false, saveUninitialized: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
