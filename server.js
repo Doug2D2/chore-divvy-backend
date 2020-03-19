@@ -28,7 +28,7 @@ app.use(loginRoutes);
 app.use(accountRoutes);
 
 db.sequelize
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(() => {
         app.listen(3000, function() {
             console.log('server running on port 3000');
