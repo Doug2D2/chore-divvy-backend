@@ -6,6 +6,7 @@ const logger = require('./logger');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const db = require('./models');
 const app = express();
 require('dotenv').config();
 
@@ -26,7 +27,11 @@ app.use(choreRoutes);
 app.use(loginRoutes);
 app.use(accountRoutes);
 
-app.listen(3000, function() {
-    console.log('server running on port 3000');
-});
-
+db.sequelize
+    .sync({ force: true })
+    .then(() => {
+        app.listen(3000, function() {
+            console.log('server running on port 3000');
+        });
+    })
+    .catch(err => logger.error(err));
