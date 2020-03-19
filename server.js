@@ -6,9 +6,13 @@ const logger = require('./logger');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const app = express();
 require('dotenv').config();
 
-const app = express();
+const categoryRoutes = require('./controllers/categories');
+const choreRoutes = require('./controllers/chores');
+const loginRoutes = require('./controllers/login');
+const accountRoutes = require('./controllers/account');
 
 app.use(session({ secret: process.env.SECRET , resave: false, saveUninitialized: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,11 +21,10 @@ app.use(helmet());
 app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-app.get('/', function(req, res) {
-    res.send('Hello World');
-});
+app.use(categoryRoutes);
+app.use(choreRoutes);
+app.use(loginRoutes);
+app.use(accountRoutes);
 
 app.listen(3000, function() {
     console.log('server running on port 3000');
