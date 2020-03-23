@@ -1,5 +1,5 @@
 module.exports = function(sequelize, Datatypes) {
-    const Chore = sequelize.define('Chore', {
+    const Chore = sequelize.define('chore', {
         id: {
             type: Datatypes.INTEGER,
             autoIncrement: true,
@@ -18,7 +18,7 @@ module.exports = function(sequelize, Datatypes) {
         frequency_id: {
             type: Datatypes.INTEGER,
             references: {
-                model: 'Frequencies',
+                model: 'frequencies',
                 key: 'id'
             }
         },
@@ -26,14 +26,14 @@ module.exports = function(sequelize, Datatypes) {
             type: Datatypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Categories',
+                model: 'categories',
                 key: 'id'
             }
         },
         assignee_id: {
             type: Datatypes.INTEGER,
             references: {
-                model: 'Users',
+                model: 'users',
                 key: 'id'
             }
         },
