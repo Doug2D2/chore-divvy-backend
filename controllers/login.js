@@ -6,7 +6,6 @@ router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
     const passwordInput = req.body.password;
 
-    console.log(db.user);
     db.user.findAll({
         where: {
             username: usernameInput,
@@ -14,11 +13,11 @@ router.post('/login', (req, res) => {
         }
     })
     .then(data => {
-        res.json(data);
+       res.sendStatus(200);
     })
-    .catch(err => res.json(err));
-    
-    //res.send(`username: ${usernameInput} password: ${passwordInput}`);
+    .catch(err => {
+        res.sendStatus(400);
+    });
 });
 
 router.post('/sign-up', (req, res) => {
