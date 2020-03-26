@@ -13,11 +13,12 @@ router.post('/login', (req, res) => {
         }
     })
     .then(data => {
-       res.sendStatus(200);
+        if(data.length === 0) {
+            res.sendStatus(401);
+        }
+        res.sendStatus(200);
     })
-    .catch(err => {
-        res.sendStatus(400);
-    });
+    .catch(err => { res.sendStatus(500) });
 });
 
 router.post('/sign-up', (req, res) => {
