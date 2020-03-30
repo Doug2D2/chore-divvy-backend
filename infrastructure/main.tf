@@ -31,11 +31,11 @@ resource "aws_db_instance" "chore_divvy_db" {
 }
 
 resource "aws_instance" "chore_divvy_server" {
-  ami               = var.ami
-  instance_type     = "t2.micro"
+    ami               = var.ami
+    instance_type     = "t2.micro"
 
-  root_block_device {
-      volume_type = "gp2"
-      volume_size = 10 
-  }
+    root_block_device {
+        volume_type = "gp2"
+        volume_size = 10 
+    }
 }
