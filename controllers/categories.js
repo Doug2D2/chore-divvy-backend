@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/get-categories', (req, res) => {
+    console.log('getting categories');
     res.send('/get-categories working');
 });
 
