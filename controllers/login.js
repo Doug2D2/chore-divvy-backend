@@ -29,14 +29,8 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/sign-up', (req, res) => {
-    const body = {
-        username: req.body.username,
-        password: req.body.password,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
-    }
 
-    const { username, password, firstName, lastName } = body;
+    const { username, password, firstName, lastName } = req.body;
 
     db.user.create({
         username: username,
