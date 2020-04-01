@@ -3,5 +3,5 @@ output "db_endpoint" {
 }
 
 output "server_public_ip" {
-    value = aws_instance.chore_divvy_server.public_ip
+    value = "Server running at ${aws_instance.chore_divvy_server.public_ip}:8080"
 }
