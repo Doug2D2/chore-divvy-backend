@@ -14,9 +14,11 @@ router.post('/login', (req, res) => {
     })
     .then(data => {
         if(data.length === 0) {
-            res.sendStatus(401);
+           res.status(401);
+           return res.json({errMessage: 'User Not Found'});
         }
-        res.sendStatus(200);
+        res.status(200);
+        return res.json(data[0]);
     })
     .catch(err => { res.sendStatus(500) });
 });
