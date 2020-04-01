@@ -22,16 +22,21 @@ router.post('/login', (req, res) => {
         return res.json(data[0]);
     })
     .catch(err => { 
-        res.sendStatus(500) 
         logger.error(err);
+        res.sendStatus(500);
+        return res.json({errMessage: 'Server Error'});
     });
 });
 
 router.post('/sign-up', (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
+    const body = {
+        username: req.body.username,
+        password: req.body.password,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    }
+
+    const { username, password, firstName, lastName } = body;
 
     db.user.create({
         username: username,
@@ -44,8 +49,9 @@ router.post('/sign-up', (req, res) => {
         res.json(data);
     })
     .catch(err => {
-        res.status(500);
         logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error'});
     });
 });
 
