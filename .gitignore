@@ -1,7 +1,3 @@
 node_modules
 log/*.log
 *.env
-infrastructure/.terraform
-infrastructure/*.tfvars
-infrastructure/*.tfstate
-infrastructure/*.tfstate.backup
