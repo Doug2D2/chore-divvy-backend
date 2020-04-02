@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "password",
     "database": "chore_divvy",
-    "host": "127.0.0.1",
+    "host": "terraform-20200331153735628000000001.cv36u8gtd5ua.us-east-1.rds.amazonaws.com",
     "dialect": "postgres"
   },
   "test": {

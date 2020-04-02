@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "chore_divvy_role" {
-    name = "chore_divvy_role"
+    name               = "chore_divvy_role"
     assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -17,6 +17,10 @@ resource "aws_iam_role" "chore_divvy_role" {
     }]
 }
 EOF
+
+    tags = {
+        App = "ChoreDivvy"      
+    }
 }
 
 resource "aws_iam_instance_profile" "chore_divvy_profile" {
@@ -25,15 +29,16 @@ resource "aws_iam_instance_profile" "chore_divvy_profile" {
 }
 
 resource "aws_iam_policy" "chore_divvy_policy" {
-  name        = "chore_divvy_policy"
-
+  name   = "chore_divvy_policy"
   policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Action": [
-        "s3:*"
+        "s3:GetObject",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -58,19 +63,55 @@ resource "aws_db_instance" "chore_divvy_db" {
     username                            = var.db_username
     password                            = var.db_password
     iam_database_authentication_enabled = true
-}
-
-resource "aws_instance" "chore_divvy_server" {
-    ami               = var.ami
-    instance_type     = "t2.micro"
-    key_name          = "matt2"
-    user_data         = file("userdata.sh")
-    iam_instance_profile = aws_iam_instance_profile.chore_divvy_profile.name
-
-    # Add security group - allow ssh 
 
     tags = {
-        Name = "ChoreDivvy-Server"
+        Name = "ChoreDivvy-DB"
+        App  = "ChoreDivvy"      
+    }
+}
+
+resource "aws_security_group" "chore_divvy_app_sg" {
+    name        = "chore_divvy_app_sg"
+    description = "Security group for Chore Divvy app server"
+
+    ingress {
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "ChoreDivvy-App-SG"
+        App  = "ChoreDivvy"    
+    }
+}
+
+resource "aws_instance" "chore_divvy_app" {
+    ami                    = var.ami
+    instance_type          = "t2.micro"
+    key_name               = "chore-divvy"
+    user_data              = file("userdata.sh")
+    iam_instance_profile   = aws_iam_instance_profile.chore_divvy_profile.name
+    vpc_security_group_ids = [aws_security_group.chore_divvy_app_sg.id]
+
+    tags = {
+        Name = "ChoreDivvy-App"
+        App  = "ChoreDivvy"     
     }
 
     root_block_device {
