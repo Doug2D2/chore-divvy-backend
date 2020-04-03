@@ -31,21 +31,40 @@ router.post('/login', (req, res) => {
 router.post('/sign-up', (req, res) => {
     const { username, password, firstName, lastName } = req.body;
 
-    db.user.create({
-        username: username,
-        password: password,
-        first_name: firstName,
-        last_name: lastName
+    db.user.findAll({
+        where: {
+            username: username
+        }
     })
     .then(data => {
-        res.status(200);
-        res.json(data);
+        if(data.length === 0) {
+            db.user.create({
+                username: username,
+                password: password,
+                first_name: firstName,
+                last_name: lastName
+            })
+            .then(data => {
+                res.status(200);
+                res.json(data);
+            })
+            .catch(err => {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error'});
+            });
+        } else {
+            res.status(401);
+            return res.json({ errMessage: `Account with email ${username} already exists`})
+        }
     })
     .catch(err => {
         logger.error(err);
         res.status(500);
         return res.json({ errMessage: 'Server Error'});
-    });
+    })
+
+    
 });
 
 module.exports = router;
