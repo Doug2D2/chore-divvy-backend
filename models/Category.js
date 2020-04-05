@@ -12,6 +12,14 @@ module.exports = function(sequelize, Datatypes) {
         }, 
         user_id: {
             type: Datatypes.ARRAY(Datatypes.INTEGER)
+        }, 
+        createdAt: {
+            type: Datatypes.DATE,
+            field: 'created_at'
+        },
+        updatedAt: {
+            type: Datatypes.DATE,
+            field: 'updated_at'
         }
     });
 
