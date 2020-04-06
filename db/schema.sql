@@ -19,6 +19,8 @@ CREATE DATABASE chore_divvy
         password VARCHAR(20) NOT NULL,
         first_name VARCHAR(30) NOT NULL,
         last_name VARCHAR(30) NOT NULL,
+        created_at DATE,
+        updated_at DATE,
         PRIMARY KEY(id)
     );
 
@@ -28,6 +30,8 @@ CREATE DATABASE chore_divvy
         id INTEGER DEFAULT NEXTVAL('categories_id_seq') NOT NULL,
         category_name VARCHAR(30) NOT NULL,
         user_id INTEGER[],
+        created_at DATE,
+        updated_at DATE,
         PRIMARY KEY(id)
     );
 
@@ -36,6 +40,8 @@ CREATE DATABASE chore_divvy
     CREATE TABLE frequency (
         id INTEGER DEFAULT NEXTVAL('freq_id_seq') NOT NULL,
         frequency_name VARCHAR(25) NOT NULL,
+        created_at DATE,
+        updated_at DATE,
         PRIMARY KEY (id)
     );
 
@@ -51,6 +57,8 @@ CREATE DATABASE chore_divvy
         assignee_id INTEGER,
         difficulty INTEGER,
         notes TEXT,
+        created_at DATE,
+        updated_at DATE,
         PRIMARY KEY (id),
         FOREIGN KEY (frequency_id) REFERENCES frequency(id),
         FOREIGN KEY (category_id) REFERENCES categories(id),

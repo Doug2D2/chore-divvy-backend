@@ -38,7 +38,15 @@ module.exports = function(sequelize, Datatypes) {
             }
         },
         difficulty: Datatypes.INTEGER,
-        notes: Datatypes.TEXT
+        notes: Datatypes.TEXT, 
+        createdAt: {
+            type: Datatypes.DATE,
+            field: 'created_at'
+        },
+        updatedAt: {
+            type: Datatypes.DATE,
+            field: 'updated_at'
+        }
     });
 
     return Chore;
