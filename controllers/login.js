@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const logger = require('../logger');
+const generator = require('generate-password');
 
 router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
@@ -62,8 +63,33 @@ router.post('/sign-up', (req, res) => {
         logger.error(err);
         res.status(500);
         return res.json({ errMessage: 'Server Error'});
-    })
+    })    
+});
 
+router.put('/forgot-password', (req, res) => {
+    const newPassword = generator.generate({
+        length: 10,
+        numbers: true
+    });
+
+    const username = req.body.username;
+
+    db.user.update({
+        password: newPassword
+    }, {
+        where: {
+            username: username
+        }
+    })
+    .then(data => {
+        res.status(200);
+        res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    })
     
 });
 
