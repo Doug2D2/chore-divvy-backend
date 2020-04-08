@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const logger = require('../logger');
+const generator = require('generate-password');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_APIKEY);
 
 router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
@@ -62,9 +65,56 @@ router.post('/sign-up', (req, res) => {
         logger.error(err);
         res.status(500);
         return res.json({ errMessage: 'Server Error'});
-    })
+    })    
+});
 
-    
+router.put('/forgot-password', (req, res) => {
+    const newPassword = generator.generate({
+        length: 8,
+        numbers: true
+    });
+
+    const username = req.body.username;
+
+    const msg = {
+        to: username,
+        from: 'natalievasquez11@gmail.com',
+        subject: 'Forgotten Password Reset',
+        text: `\nYou password has been reset. Please use your new password to login and change your password.\n
+        New Password: ${newPassword}\n`,
+      };
+
+    db.user.update({
+        password: newPassword
+    }, {
+        where: {
+            username: username
+        }
+    })
+    .then(data => {
+        if(data.length === 0 || data[0] === 0) {
+            res.status(400);
+            logger.error(`Username ${username} doesn't exist.`);
+            return res.json({ errMessage: `Username ${username} doesn't exist.` });
+        } 
+
+        sgMail
+            .send(msg)
+            .then(() => {
+                res.status(200);
+                res.json(data);
+            })
+            .catch((err) => {
+                res.status(500);
+                logger.error(err);
+                return res.json({ errMessage: 'Unable to send email.' });
+            });
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    })
 });
 
 module.exports = router;
