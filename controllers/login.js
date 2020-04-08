@@ -40,7 +40,10 @@ router.post('/sign-up', (req, res) => {
         }
     })
     .then(data => {
-        if(data.length === 0) {
+        if(password.length <= 8) {
+            res.status(400);
+            return res.json({ errMessage: 'Password must be at least 8 characters' });
+        } else if(data.length === 0) {
             db.user.create({
                 username: username,
                 password: password,
