@@ -37,7 +37,7 @@ router.post('/sign-up', (req, res) => {
     let isEmailAddressValid = emailFormatRegEx.test(username);
 
     if(isEmailAddressValid) {
-        if(password.length <= 8) {
+        if(password.length >= 8) {
             db.user.findAll({
                 where: {
                     username: username
@@ -74,7 +74,7 @@ router.post('/sign-up', (req, res) => {
             res.status(400);
             return res.json({ errMessage: 'Password must be at least 8 characters' });
         }
-    } else {
+     } else {
         res.status(400);
         return res.json({ errMessage: 'Invalid email address' });
     }
