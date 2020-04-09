@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
 router.post('/sign-up', (req, res) => {
     const { username, password, firstName, lastName } = req.body;
 
-    if(password.length <= 8) {
+    if(password.length >= 8) {
         db.user.findAll({
             where: {
                 username: username
