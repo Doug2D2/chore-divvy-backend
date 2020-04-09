@@ -33,43 +33,50 @@ router.post('/login', (req, res) => {
 
 router.post('/sign-up', (req, res) => {
     const { username, password, firstName, lastName } = req.body;
+    const emailFormatRegEx = /\S+@\S+/;
+    let isEmailAddressValid = emailFormatRegEx.test(username);
 
-    if(password.length <= 8) {
-        db.user.findAll({
-            where: {
-                username: username
-            }
-        })
-        .then(data => {
-            if (data.length === 0) {
-                db.user.create({
-                    username: username,
-                    password: password,
-                    first_name: firstName,
-                    last_name: lastName
-                })
-                .then(data => {
-                    res.status(200);
-                    res.json(data);
-                })
-                .catch(err => {
-                    logger.error(err);
-                    res.status(500);
-                    return res.json({ errMessage: 'Server Error'});
-                });
-            } else {
-                res.status(401);
-                return res.json({ errMessage: `Account with email ${username} already exists` });
-            }
-        })
-        .catch(err => {
-            logger.error(err);
-            res.status(500);
-            return res.json({ errMessage: 'Server Error'});
-        })   
+    if(isEmailAddressValid) {
+        if(password.length <= 8) {
+            db.user.findAll({
+                where: {
+                    username: username
+                }
+            })
+            .then(data => {
+                if (data.length === 0) {
+                    db.user.create({
+                        username: username,
+                        password: password,
+                        first_name: firstName,
+                        last_name: lastName
+                    })
+                    .then(data => {
+                        res.status(200);
+                        res.json(data);
+                    })
+                    .catch(err => {
+                        logger.error(err);
+                        res.status(500);
+                        return res.json({ errMessage: 'Server Error'});
+                    });
+                } else {
+                    res.status(401);
+                    return res.json({ errMessage: `Account with email ${username} already exists` });
+                }
+            })
+            .catch(err => {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error'});
+            })   
+        } else {
+            res.status(400);
+            return res.json({ errMessage: 'Password must be at least 8 characters' });
+        }
     } else {
         res.status(400);
-        return res.json({ errMessage: 'Password must be at least 8 characters' });
+        return res.json({ errMessage: 'Invalid email address' });
     }
 });
 
@@ -78,9 +85,7 @@ router.put('/forgot-password', (req, res) => {
         length: 8,
         numbers: true
     });
-
     const username = req.body.username;
-
     const msg = {
         to: username,
         from: 'natalievasquez11@gmail.com',
@@ -88,38 +93,46 @@ router.put('/forgot-password', (req, res) => {
         text: `\nYou password has been reset. Please use your new password to login and change your password.\n
         New Password: ${newPassword}\n`,
       };
-
-    db.user.update({
-        password: newPassword
-    }, {
-        where: {
-            username: username
-        }
-    })
-    .then(data => {
-        if(data.length === 0 || data[0] === 0) {
-            res.status(400);
-            logger.error(`Username ${username} doesn't exist.`);
-            return res.json({ errMessage: `Username ${username} doesn't exist.` });
-        } 
-
-        sgMail
-            .send(msg)
-            .then(() => {
-                res.status(200);
-                res.json(data);
-            })
-            .catch((err) => {
-                res.status(500);
-                logger.error(err);
-                return res.json({ errMessage: 'Unable to send email.' });
-            });
-    })
-    .catch(err => {
-        logger.error(err);
-        res.status(500);
-        return res.json({ errMessage: 'Server Error' });
-    })
+      const emailFormatRegEx = /\S+@\S+/;
+      let isEmailAddressValid = emailFormatRegEx.test(username);
+  
+      if(isEmailAddressValid) {
+        db.user.update({
+            password: newPassword
+        }, {
+            where: {
+                username: username
+            }
+        })
+        .then(data => {
+            if(data.length === 0 || data[0] === 0) {
+                res.status(400);
+                logger.error(`Username ${username} doesn't exist.`);
+                return res.json({ errMessage: `Username ${username} doesn't exist.` });
+            } 
+    
+            sgMail
+                .send(msg)
+                .then(() => {
+                    res.status(200);
+                    res.json(data);
+                })
+                .catch((err) => {
+                    res.status(500);
+                    logger.error(err);
+                    return res.json({ errMessage: 'Unable to send email.' });
+                });
+        })
+        .catch(err => {
+            logger.error(err);
+            res.status(500);
+            return res.json({ errMessage: 'Server Error' });
+        })
+      } else {
+          res.status(400);
+          return res.json({ errMessage: 'Invalid email address' });
+      }
+    
 });
 
 module.exports = router;
