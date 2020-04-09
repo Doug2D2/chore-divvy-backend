@@ -5,6 +5,7 @@ const logger = require('../logger');
 const generator = require('generate-password');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_APIKEY);
+const bcrypt = require('bcrypt');
 
 router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
@@ -45,20 +46,27 @@ router.post('/sign-up', (req, res) => {
             })
             .then(data => {
                 if (data.length === 0) {
-                    db.user.create({
-                        username: username,
-                        password: password,
-                        first_name: firstName,
-                        last_name: lastName
-                    })
-                    .then(data => {
-                        res.status(200);
-                        res.json(data);
-                    })
-                    .catch(err => {
-                        logger.error(err);
-                        res.status(500);
-                        return res.json({ errMessage: 'Server Error'});
+                    bcrypt.hash(password, 10, function(err, hash) {
+                        if(err) {
+                            logger.error(err);
+                            res.status(500);
+                            return res.json({ errMessage: 'Server Error' });
+                        }
+                        db.user.create({
+                            username: username,
+                            password: hash,
+                            first_name: firstName,
+                            last_name: lastName
+                        })
+                        .then(data => {
+                            res.status(200);
+                            res.json(data);
+                        })
+                        .catch(err => {
+                            logger.error(err);
+                            res.status(500);
+                            return res.json({ errMessage: 'Server Error'});
+                        });
                     });
                 } else {
                     res.status(401);
