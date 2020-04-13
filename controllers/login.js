@@ -13,22 +13,35 @@ router.post('/login', (req, res) => {
 
     db.user.findAll({
         where: {
-            username: usernameInput,
-            password: passwordInput
+            username: usernameInput
         }
     })
     .then(data => {
         if(data.length === 0) {
-           res.status(401);
-           return res.json({errMessage: 'User Not Found'});
-        }
-        res.status(200);
-        return res.json(data[0]);
+            res.status(401);
+            return res.json({errMessage: 'User Not Found'});
+         }
+
+        const pw = data[0].password;
+
+        bcrypt.compare(passwordInput, pw, function(err, result) {
+            if(err) {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
+            }
+            if(!result) {
+                res.status(401);
+                return res.json({ errMessage: 'Incorrect Password' });
+            }
+            res.status(200);
+            return res.json(data[0]);
+        });
     })
     .catch(err => { 
         logger.error(err);
         res.sendStatus(500);
-        return res.json({errMessage: 'Server Error'});
+        return res.json({errMessage: 'Server Error' });
     });
 });
 
@@ -143,7 +156,6 @@ router.put('/forgot-password', (req, res) => {
                 return res.json({ errMessage: 'Server Error' });
             })
           });
-        
       } else {
           res.status(400);
           return res.json({ errMessage: 'Invalid email address' });

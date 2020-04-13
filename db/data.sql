@@ -1,10 +1,10 @@
 USE chore_divvy;
 
-INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('obiONE_kanobi@email.com', 'password', 'Obione', 'Kanobi', '2020-01-01', '2020-01-01');
-INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('TWOpac@email.com', 'password', 'Twopac', 'Shakur', '2020-01-01', '2020-01-01');
-INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('thrice@email.com', 'password', 'Thrice', 'Times', '2020-01-01', '2020-01-01');
-INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('quarter_lb@email.com', 'password', 'Mickey', 'D', '2020-01-01', '2020-01-01');
-INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('real_houseFIVES_of_nj@email.com', 'password', 'Snooki', 'Five', '2020-01-01', '2020-01-01');
+INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('obiONE_kanobi@email.com', '$2b$10$pOSZFSYRx2XFyl/.KZDNa.OoWfi6vp2QbR5X3HIB9ytguTq6y/5sC', 'Obione', 'Kanobi', '2020-01-01', '2020-01-01');
+INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('TWOpac@email.com', '$2b$10$pOSZFSYRx2XFyl/.KZDNa.OoWfi6vp2QbR5X3HIB9ytguTq6y/5sC', 'Twopac', 'Shakur', '2020-01-01', '2020-01-01');
+INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('thrice@email.com', '$2b$10$pOSZFSYRx2XFyl/.KZDNa.OoWfi6vp2QbR5X3HIB9ytguTq6y/5sC', 'Thrice', 'Times', '2020-01-01', '2020-01-01');
+INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('quarter_lb@email.com', '$2b$10$pOSZFSYRx2XFyl/.KZDNa.OoWfi6vp2QbR5X3HIB9ytguTq6y/5sC', 'Mickey', 'D', '2020-01-01', '2020-01-01');
+INSERT INTO users (username, password, first_name, last_name, created_at, updated_at) VALUES ('real_houseFIVES_of_nj@email.com', '$2b$10$pOSZFSYRx2XFyl/.KZDNa.OoWfi6vp2QbR5X3HIB9ytguTq6y/5sC', 'Snooki', 'Five', '2020-01-01', '2020-01-01');
 
 INSERT INTO categories (category_name, user_id, created_at, updated_at) VALUES ('Personal', '{1}', '2020-01-01', '2020-01-01');
 INSERT INTO categories (category_name, user_id, created_at, updated_at) VALUES ('Family Chores', '{1, 2, 3}', '2020-01-01', '2020-01-01');
