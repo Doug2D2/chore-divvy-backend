@@ -105,37 +105,45 @@ router.put('/forgot-password', (req, res) => {
       let isEmailAddressValid = emailFormatRegEx.test(username);
   
       if(isEmailAddressValid) {
-        db.user.update({
-            password: newPassword
-        }, {
-            where: {
-                username: username
+          bcrypt.hash(newPassword, 10, function(err, hash) {
+            if(err) {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
             }
-        })
-        .then(data => {
-            if(data.length === 0 || data[0] === 0) {
-                res.status(400);
-                logger.error(`Username ${username} doesn't exist.`);
-                return res.json({ errMessage: `Username ${username} doesn't exist.` });
-            } 
-    
-            sgMail
-                .send(msg)
-                .then(() => {
-                    res.status(200);
-                    res.json(data);
-                })
-                .catch((err) => {
-                    res.status(500);
-                    logger.error(err);
-                    return res.json({ errMessage: 'Unable to send email.' });
-                });
-        })
-        .catch(err => {
-            logger.error(err);
-            res.status(500);
-            return res.json({ errMessage: 'Server Error' });
-        })
+            db.user.update({
+                password: hash
+            }, {
+                where: {
+                    username: username
+                }
+            })
+            .then(data => {
+                if(data.length === 0 || data[0] === 0) {
+                    res.status(400);
+                    logger.error(`Username ${username} doesn't exist.`);
+                    return res.json({ errMessage: `Username ${username} doesn't exist.` });
+                } 
+        
+                sgMail
+                    .send(msg)
+                    .then(() => {
+                        res.status(200);
+                        res.json(data);
+                    })
+                    .catch((err) => {
+                        res.status(500);
+                        logger.error(err);
+                        return res.json({ errMessage: 'Unable to send email.' });
+                    });
+            })
+            .catch(err => {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
+            })
+          });
+        
       } else {
           res.status(400);
           return res.json({ errMessage: 'Invalid email address' });
