@@ -16,7 +16,7 @@ CREATE DATABASE chore_divvy
 	CREATE TABLE users (
         id  INTEGER DEFAULT NEXTVAL('user_id_seq') NOT NULL,
         username VARCHAR(50) NOT NULL,
-        password VARCHAR(20) NOT NULL,
+        password VARCHAR(80) NOT NULL,
         first_name VARCHAR(30) NOT NULL,
         last_name VARCHAR(30) NOT NULL,
         created_at DATE,
