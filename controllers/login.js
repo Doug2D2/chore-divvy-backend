@@ -5,6 +5,7 @@ const logger = require('../logger');
 const generator = require('generate-password');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_APIKEY);
+const bcrypt = require('bcrypt');
 
 router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
@@ -12,22 +13,35 @@ router.post('/login', (req, res) => {
 
     db.user.findAll({
         where: {
-            username: usernameInput,
-            password: passwordInput
+            username: usernameInput
         }
     })
     .then(data => {
         if(data.length === 0) {
-           res.status(401);
-           return res.json({errMessage: 'User Not Found'});
-        }
-        res.status(200);
-        return res.json(data[0]);
+            res.status(401);
+            return res.json({errMessage: 'User Not Found'});
+         }
+
+        const pw = data[0].password;
+
+        bcrypt.compare(passwordInput, pw, function(err, result) {
+            if(err) {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
+            }
+            if(!result) {
+                res.status(401);
+                return res.json({ errMessage: 'Incorrect Password' });
+            }
+            res.status(200);
+            return res.json(data[0]);
+        });
     })
     .catch(err => { 
         logger.error(err);
         res.sendStatus(500);
-        return res.json({errMessage: 'Server Error'});
+        return res.json({errMessage: 'Server Error' });
     });
 });
 
@@ -45,20 +59,27 @@ router.post('/sign-up', (req, res) => {
             })
             .then(data => {
                 if (data.length === 0) {
-                    db.user.create({
-                        username: username,
-                        password: password,
-                        first_name: firstName,
-                        last_name: lastName
-                    })
-                    .then(data => {
-                        res.status(200);
-                        res.json(data);
-                    })
-                    .catch(err => {
-                        logger.error(err);
-                        res.status(500);
-                        return res.json({ errMessage: 'Server Error'});
+                    bcrypt.hash(password, 10, function(err, hash) {
+                        if(err) {
+                            logger.error(err);
+                            res.status(500);
+                            return res.json({ errMessage: 'Server Error' });
+                        }
+                        db.user.create({
+                            username: username,
+                            password: hash,
+                            first_name: firstName,
+                            last_name: lastName
+                        })
+                        .then(data => {
+                            res.status(200);
+                            res.json(data);
+                        })
+                        .catch(err => {
+                            logger.error(err);
+                            res.status(500);
+                            return res.json({ errMessage: 'Server Error'});
+                        });
                     });
                 } else {
                     res.status(401);
@@ -97,37 +118,44 @@ router.put('/forgot-password', (req, res) => {
       let isEmailAddressValid = emailFormatRegEx.test(username);
   
       if(isEmailAddressValid) {
-        db.user.update({
-            password: newPassword
-        }, {
-            where: {
-                username: username
+          bcrypt.hash(newPassword, 10, function(err, hash) {
+            if(err) {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
             }
-        })
-        .then(data => {
-            if(data.length === 0 || data[0] === 0) {
-                res.status(400);
-                logger.error(`Username ${username} doesn't exist.`);
-                return res.json({ errMessage: `Username ${username} doesn't exist.` });
-            } 
-    
-            sgMail
-                .send(msg)
-                .then(() => {
-                    res.status(200);
-                    res.json(data);
-                })
-                .catch((err) => {
-                    res.status(500);
-                    logger.error(err);
-                    return res.json({ errMessage: 'Unable to send email.' });
-                });
-        })
-        .catch(err => {
-            logger.error(err);
-            res.status(500);
-            return res.json({ errMessage: 'Server Error' });
-        })
+            db.user.update({
+                password: hash
+            }, {
+                where: {
+                    username: username
+                }
+            })
+            .then(data => {
+                if(data.length === 0 || data[0] === 0) {
+                    res.status(400);
+                    logger.error(`Username ${username} doesn't exist.`);
+                    return res.json({ errMessage: `Username ${username} doesn't exist.` });
+                } 
+        
+                sgMail
+                    .send(msg)
+                    .then(() => {
+                        res.status(200);
+                        res.json(data);
+                    })
+                    .catch((err) => {
+                        res.status(500);
+                        logger.error(err);
+                        return res.json({ errMessage: 'Unable to send email.' });
+                    });
+            })
+            .catch(err => {
+                logger.error(err);
+                res.status(500);
+                return res.json({ errMessage: 'Server Error' });
+            })
+          });
       } else {
           res.status(400);
           return res.json({ errMessage: 'Invalid email address' });
