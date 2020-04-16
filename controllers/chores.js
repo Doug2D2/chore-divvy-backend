@@ -111,8 +111,23 @@ router.put('/update-chore/:id', (req, res) => {
     });
 });
 
-router.delete('/delete-chore', (req, res) => {
-    res.send('/delete-chore working');
+router.delete('/delete-chore/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.chore.destroy({
+        where: {
+            id: id
+        }
+    })
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    });
 });
 
 module.exports = router;
