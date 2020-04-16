@@ -13,7 +13,7 @@ router.get('/get-chores', (req, res) => {
         logger.error(err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
-    })
+    });
 });
 
 router.get('/get-chore-by-id', (req, res) => {
@@ -32,11 +32,43 @@ router.get('/get-chore-by-id', (req, res) => {
         logger.error(err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
-    })
+    });
 });
 
 router.post('/add-chore', (req, res) => {
-    res.send('/add-chore working');
+    const { 
+        choreName, 
+        status, 
+        frequencyId,
+        categoryId, 
+        assigneeId, 
+        difficulty, 
+        notes, 
+        createdAt, 
+        updatedAt } = req.body;
+    //Will this be calculated on backend and saved when 'complete' box checked?
+    // const dateCompleteInput = req.body.date_complete;
+    
+    db.chore.create({
+        chore_name: choreName,
+        status: status,
+        frequency_id: frequencyId,
+        category_id: categoryId,
+        assignee_id: assigneeId,
+        difficulty: difficulty,
+        notes: notes,
+        createdAt: createdAt, 
+        updatedAt: updatedAt
+    })
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    })
 });
 
 router.put('/update-chore', (req, res) => {
