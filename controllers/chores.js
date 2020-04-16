@@ -71,8 +71,44 @@ router.post('/add-chore', (req, res) => {
     })
 });
 
-router.put('/update-chore', (req, res) => {
-    res.send('/update-chore working');
+router.put('/update-chore/:id', (req, res) => {
+    const id = req.params.id;
+    const {
+        choreName, 
+        status, 
+        frequencyId,
+        categoryId, 
+        assigneeId, 
+        difficulty, 
+        notes, 
+        createdAt, 
+        updatedAt } = req.body;
+
+    db.chore.update({
+            chore_name: choreName,
+            status: status,
+            frequency_id: frequencyId,
+            category_id: categoryId,
+            assignee_id: assigneeId,
+            difficulty: difficulty,
+            notes: notes,
+            createdAt: createdAt, 
+            updatedAt: updatedAt
+    }, {
+        where: {
+            id: id
+        }
+    })
+    .then(data => {
+        res.status(200);
+        //data is number of items returned.
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    });
 });
 
 router.delete('/delete-chore', (req, res) => {
