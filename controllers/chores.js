@@ -1,8 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../models');
+const logger = require('../logger');
 
 router.get('/get-chores', (req, res) => {
     res.send('/get-chores working');
+
+    db.chore.findAll()
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    })
+
 });
 
 router.get('/get-chore-by-id', (req, res) => {
