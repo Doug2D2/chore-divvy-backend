@@ -16,8 +16,8 @@ router.get('/get-chores', (req, res) => {
     });
 });
 
-router.get('/get-chore-by-id', (req, res) => {
-    const choreId = req.body.id;
+router.get('/get-chore/:id', (req, res) => {
+    const choreId = req.params.id;
 
     db.chore.findAll({
         where: {
