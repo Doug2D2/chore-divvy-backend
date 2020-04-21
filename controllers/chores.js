@@ -43,9 +43,7 @@ router.post('/add-chore', (req, res) => {
         categoryId, 
         assigneeId, 
         difficulty, 
-        notes, 
-        createdAt, 
-        updatedAt } = req.body;
+        notes } = req.body;
     //Will this be calculated on backend and saved when 'complete' box checked?
     // const dateCompleteInput = req.body.date_complete;
     
@@ -56,9 +54,7 @@ router.post('/add-chore', (req, res) => {
         category_id: categoryId,
         assignee_id: assigneeId,
         difficulty: difficulty,
-        notes: notes,
-        createdAt: createdAt, 
-        updatedAt: updatedAt
+        notes: notes
     })
     .then(data => {
         res.status(200);
