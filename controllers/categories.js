@@ -36,7 +36,24 @@ router.get('/get-category/:id', (req, res) => {
 });
 
 router.post('/add-category', (req, res) => {
-    
+    const { 
+        categoryName,
+        userIds
+     } = req.body;
+
+     db.category.create({
+         category_name: categoryName,
+         user_id: userIds
+     })
+     .then(data => {
+        res.status(200);
+        return res.json(data);
+     })
+     .catch(err => {
+         logger.error(err);
+         res.status(500);
+         return res.json({ errMessage: 'Server Error' });
+     })
 });
 
 router.put('/update-category/:id', (req, res) => {
