@@ -11,12 +11,12 @@ INSERT INTO categories (category_name, user_id, created_at, updated_at) VALUES (
 INSERT INTO categories (category_name, user_id, created_at, updated_at) VALUES ('Mickeys Personal', '{4}', '2020-01-01', '2020-01-01');
 INSERT INTO categories (category_name, user_id, created_at, updated_at) VALUES ('Me & hubby', '{4, 5}', '2020-01-01', '2020-01-01');
 
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Daily', '2020-01-01', '2020-01-01');
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Weekly', '2020-01-01', '2020-01-01');
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Bi-Weekly', '2020-01-01', '2020-01-01');
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Monthly', '2020-01-01', '2020-01-01');
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Quarterly', '2020-01-01', '2020-01-01');
-INSERT INTO frequency (frequency_name, created_at, updated_at) VALUES ('Yearly', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Daily', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Weekly', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Bi-Weekly', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Monthly', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Quarterly', '2020-01-01', '2020-01-01');
+INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Yearly', '2020-01-01', '2020-01-01');
 
 INSERT INTO chores (chore_name, status, frequency_id, category_id, difficulty, created_at, updated_at) 
 VALUES ('Wash dishes', 'To do', 1, 2, 3, '2020-01-01', '2020-01-01');
