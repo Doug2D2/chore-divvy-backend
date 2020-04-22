@@ -1,24 +1,104 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../models');
+const logger = require('../logger');
 
 router.get('/get-categories', (req, res) => {
-    res.send('/get-categories working');
+    db.category.findAll()
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    });
 });
 
-router.get('/get-categories-by-id', (req, res) => {
-    res.send('/get-categories-by-id working');
+router.get('/get-category/:id', (req, res) => {
+    const id = req.params.id;
+    
+    db.category.findAll({
+        where: {
+            id: id
+        }
+    })
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    });
 });
 
 router.post('/add-category', (req, res) => {
-    res.send('/add-category working');
+    const { 
+        categoryName,
+        userIds
+     } = req.body;
+
+     db.category.create({
+         category_name: categoryName,
+         user_id: userIds
+     })
+     .then(data => {
+        res.status(200);
+        return res.json(data);
+     })
+     .catch(err => {
+         logger.error(err);
+         res.status(500);
+         return res.json({ errMessage: 'Server Error' });
+     })
 });
 
-router.put('/update-category', (req, res) => {
-    res.send('/update-category working');
+router.put('/update-category/:id', (req, res) => {
+    const id = req.params.id;
+    const { 
+        categoryName,
+        userIds
+     } = req.body;
+
+    db.category.update({
+        category_name: categoryName,
+        user_id: userIds
+    }, {
+        where: {
+            id: id
+        }
+    })
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    });
 });
 
-router.delete('/delete-category', (req, res) => {
-    res.send('/delete-cateogry working');
+router.delete('/delete-category/:id', (req, res) => {
+    const id = req.params.id;
+    
+    db.category.destroy({
+        where: {
+            id: id
+        }
+    })
+    .then(data => {
+        res.status(200);
+        return res.json(data);
+    })
+    .catch(err => {
+        logger.error(err);
+        res.status(500);
+        return res.json({ errMessage: 'Server Error' });
+    })
 });
 
 module.exports = router;
