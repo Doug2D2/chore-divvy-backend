@@ -8,11 +8,17 @@ module.exports = function(sequelize, Datatypes) {
         },
         chore_name: {
             type: Datatypes.STRING(25),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
         },
         status: {
             type: Datatypes.STRING(255),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isIn: [["To Do", "In Progress", "Completed"]]
+            }
         },
         date_complete: Datatypes.DATE,
         frequency_id: {
@@ -37,7 +43,12 @@ module.exports = function(sequelize, Datatypes) {
                 key: 'id'
             }
         },
-        difficulty: Datatypes.INTEGER,
+        difficulty: {
+            type: Datatypes.INTEGER,
+            validate: {
+                isIn: [["Easy", "Medium", "Hard"]]
+            }
+        },
         notes: Datatypes.TEXT, 
         createdAt: {
             type: Datatypes.DATE,
