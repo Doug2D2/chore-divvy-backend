@@ -76,9 +76,8 @@ router.put('/update-chore/:id', (req, res) => {
         categoryId, 
         assigneeId, 
         difficulty, 
-        notes, 
-        createdAt, 
-        updatedAt } = req.body;
+        notes } = req.body;
+
 
     db.chore.update({
             chore_name: choreName,
@@ -87,9 +86,7 @@ router.put('/update-chore/:id', (req, res) => {
             category_id: categoryId,
             assignee_id: assigneeId,
             difficulty: difficulty,
-            notes: notes,
-            createdAt: createdAt, 
-            updatedAt: updatedAt
+            notes: notes
     }, {
         where: {
             id: id
