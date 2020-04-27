@@ -4,7 +4,11 @@ const db = require('../models');
 const logger = require('../logger');
 
 router.get('/get-chores', (req, res) => {
-    db.chore.findAll()
+    db.chore.findAll({
+        order: [
+            ['createdAt', 'DESC']
+        ]
+    })
     .then(data => {
         res.status(200);
         return res.json(data);
