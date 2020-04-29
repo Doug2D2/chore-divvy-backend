@@ -8,7 +8,10 @@ module.exports = function(sequelize, DataTypes) {
         },
         username: {
             type: DataTypes.STRING(50),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isEmail: true
+            }
         },
         password: {
             type: DataTypes.STRING(80),
@@ -16,11 +19,17 @@ module.exports = function(sequelize, DataTypes) {
         },
         first_name: {
             type: DataTypes.STRING(30),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isAlpha: true
+            }
         },
         last_name: {
             type: DataTypes.STRING(30),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isAlpha: true
+            }
         }, 
         createdAt: {
             type: DataTypes.DATE,
