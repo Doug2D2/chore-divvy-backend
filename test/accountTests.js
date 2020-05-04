@@ -1,45 +1,49 @@
+const supertest = require('supertest');
+const server = supertest.agent('http://localhost:8080');
 const chai = require('chai');
 var expect = chai.expect;
-const db = require('../models');
-const chaiHttp = require('chai-http');
-var should = chai.should();
-chai.use(chaiHttp);
+
+
 
 describe('Account Tests', () => {
 
-    beforeEach((done) => {
-        db.user.destroy({
-            where : {},
-            truncate: true
-        })
-        .then(data => {
-            //console.log(data);
-            done();
-        })
-        .catch(err => {
-            console.log(err);
-            done();
-        });
-    });
-
-    describe('/GET users', () => {
-        it('should GET all users from user table', () => {
-            chai.request('http://localhost:8080')
-                .get('/get-users')
-                .end((err, res) => {
-                    //should.exist(res);
-                    console.log(res);
-                    res.should.have.status(200);
-                    res.should.be.a('array');
-                    res.length.should.be.eql(0);
-                done();
-            });
-        });
-    });
-
-    // describe('', function() {
+    // beforeEach(() => {
 
     // });
+
+    describe('/get-users', () => {
+        it('should get all users', (done) => {
+            server
+                .get('/get-users')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.be.gt(0);
+                    expect(res.body[0]).to.be.a('object');
+                    done();
+                });
+        });
+    });
+
+    describe('/get-user/:id', () => {
+        it('should get one user by id', (done) => {
+            server
+                .get('/get-user/7')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0]).to.be.a('object');
+                    done();
+                });
+        });
+    });
 
     // describe('', function() {
 
