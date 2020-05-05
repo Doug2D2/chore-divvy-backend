@@ -1,11 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../models');
+// let db = require('../models');
 const logger = require('../logger');
 const bcrypt = require('bcrypt');
+const mock = require('../test/models/UserMock');
+
+console.log(process.env.NODE_ENV);
+if(process.env.NODE_ENV === 'test') {
+    console.log('letter A');
+    var db = {
+        user: require('../test/models/UserMock')
+    };
+} else {
+    var db = require('../models');
+}
 
 router.get('/get-users', (req, res) => {
-    db.user.findAll()
+   db.user.findAll()
+    // mock.findAll()
     .then(data => {
         res.status(200);
         return res.json(data);

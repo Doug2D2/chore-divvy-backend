@@ -1,9 +1,10 @@
 const supertest = require('supertest');
 const server = supertest.agent('http://localhost:8080');
 const chai = require('chai');
-var expect = chai.expect;
-
-
+const expect = chai.expect;
+const proxyquire = require('proxyquire');
+const UserMock = require('./models/UserMock');
+const account = proxyquire('../controllers/account', { 'db' : { 'user': UserMock }});
 
 describe('Account Tests', () => {
 
@@ -23,6 +24,7 @@ describe('Account Tests', () => {
                     expect(res.body).to.be.a('array');
                     expect(res.body.length).to.be.gt(0);
                     expect(res.body[0]).to.be.a('object');
+                    console.log(res.body[0]);
                     done();
                 });
         });
