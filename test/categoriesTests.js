@@ -14,6 +14,16 @@ describe('Category Tests', () => {
         })
         .then(() => done())
         .catch(err => logger.error(err));
+
+        // db.user.create({
+        //     id: -1,
+        //     username: 'tester@email.com',
+        //     password: 'testPassword',
+        //     first_name: 'testFirstName',
+        //     last_name: 'testLastName'
+        // })
+        // .then(() => done())
+        // .catch(err => logger.error(err));
     });
 
     afterEach((done) => {
@@ -59,4 +69,11 @@ describe('Category Tests', () => {
                 });
         });
     });
+
+    // describe('/add-category', (req, res) => {
+    //     it('should add category to category table', (done) => {
+    //         server
+                
+    //     });
+    // });
 });

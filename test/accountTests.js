@@ -66,19 +66,23 @@ describe('Account Tests', () => {
     describe('/update-account/:id', () => {
         it('should update user account by id', (done) => {
             let updatedTestUser = {
-                first_name: 'updatedTestFirstName',
-                last_name: 'updatedTestLastName'
+                firstName: 'updatedTestFirstName',
+                lastName: 'updatedTestLastName'
             };
             
             server 
                 .put('/update-account/-1')
                 .send(updatedTestUser)
                 .set('Accept', 'application/json')
-                // .expect('Content-Type', /json/)
-                .expect(200, done);
-                // .end((err, res) => {
-
-                // });
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0]).to.equal(1);
+                    done();
+                });
         });
     });
 });
