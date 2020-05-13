@@ -8,22 +8,23 @@ const logger = require('../logger');
 describe('Category Tests', () => {
 
     beforeEach((done) => {
-        db.category.create({
-            id: -1,
-            category_name: 'testCategory'
-        })
-        .then(() => done())
-        .catch(err => logger.error(err));
 
-        // db.user.create({
-        //     id: -1,
-        //     username: 'tester@email.com',
-        //     password: 'testPassword',
-        //     first_name: 'testFirstName',
-        //     last_name: 'testLastName'
-        // })
-        // .then(() => done())
-        // .catch(err => logger.error(err));
+        db.user.create({
+            id: -1,
+            username: 'tester@email.com',
+            password: 'testPassword',
+            first_name: 'testFirstName',
+            last_name: 'testLastName'
+        })
+        .then(() => {
+            db.category.create({
+                id: -1,
+                category_name: 'testCategory'
+            })
+            .then(() => done())
+            .catch(err => logger.error(err));
+        })
+        .catch(err => logger.error(err));
     });
 
     afterEach((done) => {
@@ -32,7 +33,15 @@ describe('Category Tests', () => {
                 id: -1
             }
         })
-        .then(() => done())
+        .then(() => {
+            db.user.destroy({
+                where: {
+                    id: -1
+                }
+            })
+            .then(() => done())
+            .catch(err => logger.error(err));
+        })
         .catch(err => logger.error(err));
     });
 
@@ -70,10 +79,62 @@ describe('Category Tests', () => {
         });
     });
 
+    describe('/update-category/:id', (req, res) => {
+        it('should update a category by the id', (done) => {
+            let updatedCategory = {
+                categoryName: 'UpdatedTestCategory',
+                userIds: [-1]
+            };
+
+            server
+                .put('/update-category/-1')
+                .send(updatedCategory)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    console.log(res.body);
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0]).to.equal(1);
+                    done();
+                });
+            });
+        });
+
     // describe('/add-category', (req, res) => {
     //     it('should add category to category table', (done) => {
+    //         let newCategory = {
+    //             id: -1,
+    //             categoryName: 'newTestCategory'
+    //         };
+
     //         server
-                
+    //             .post('/add-category')
+    //             .send(newCategory)
+    //             .set('Accept', 'application/json')
+    //             .expect('Content-Type', /json/)
+    //             .expect(200)
+    //             .end((err, res) => {
+    //                 console.log(res.body);
+    //                 expect(res.status).to.equal(200);
+    //                 done();
+    //             });
+    //     });
+    // });
+
+    // describe('/delete-category/:id', (req, res) => {
+    //     it('should delete a category from the category table', (done) => {
+    //         server
+    //             //how to find id???
+    //             .delete('/delete-category/:id')
+    //             .set('Accept', 'application/json')
+    //             .expect('Content-Type', /json/)
+    //             .expect(200)
+    //             .end((err, res) => {
+    //                 done();
+    //             });
     //     });
     // });
 });
