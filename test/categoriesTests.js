@@ -4,6 +4,7 @@ const chai = require('chai');
 var expect = chai.expect;
 const db = require('../models');
 const logger = require('../logger');
+let deleteCategoryId;
 
 describe('Category Tests', () => {
 
@@ -93,7 +94,6 @@ describe('Category Tests', () => {
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
-                    console.log(res.body);
                     expect(res.status).to.equal(200);
                     expect(res.body).to.be.a('array');
                     expect(res.body.length).to.equal(1);
@@ -103,38 +103,37 @@ describe('Category Tests', () => {
             });
         });
 
-    // describe('/add-category', (req, res) => {
-    //     it('should add category to category table', (done) => {
-    //         let newCategory = {
-    //             id: -1,
-    //             categoryName: 'newTestCategory'
-    //         };
+    describe('/add-category', (req, res) => {
+        it('should add category to category table', (done) => {
+            let newCategory = {
+                categoryName: 'newTestCategory'
+            };
 
-    //         server
-    //             .post('/add-category')
-    //             .send(newCategory)
-    //             .set('Accept', 'application/json')
-    //             .expect('Content-Type', /json/)
-    //             .expect(200)
-    //             .end((err, res) => {
-    //                 console.log(res.body);
-    //                 expect(res.status).to.equal(200);
-    //                 done();
-    //             });
-    //     });
-    // });
+            server
+                .post('/add-category')
+                .send(newCategory)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    deleteCategoryId = res.body.id;
+                    expect(res.status).to.equal(200);
+                    done();
+                });
+        });
+    });
 
-    // describe('/delete-category/:id', (req, res) => {
-    //     it('should delete a category from the category table', (done) => {
-    //         server
-    //             //how to find id???
-    //             .delete('/delete-category/:id')
-    //             .set('Accept', 'application/json')
-    //             .expect('Content-Type', /json/)
-    //             .expect(200)
-    //             .end((err, res) => {
-    //                 done();
-    //             });
-    //     });
-    // });
+    describe('/delete-category/:id', (req, res) => {
+        it('should delete a category from the category table', (done) => {
+            server
+                .delete('/delete-category/' + deleteCategoryId)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    console.log(res.body);
+                    done();
+                });
+        });
+    });
 });
