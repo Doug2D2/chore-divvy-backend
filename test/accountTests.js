@@ -2,15 +2,32 @@ const supertest = require('supertest');
 const server = supertest.agent('http://localhost:8080');
 const chai = require('chai');
 const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const UserMock = require('./models/UserMock');
-const account = proxyquire('../controllers/account', { 'db' : { 'user': UserMock }});
+const db = require('../models');
+const logger = require('../logger');
 
 describe('Account Tests', () => {
 
-    // beforeEach(() => {
+    beforeEach((done) => {
+        db.user.create({
+            id: -1,
+            username: 'tester@email.com',
+            password: 'testPassword',
+            first_name: 'testFirstName',
+            last_name: 'testLastName'
+        })
+        .then(() => done())
+        .catch(err => logger.error(err));
+    });
 
-    // });
+    afterEach((done) => {
+        db.user.destroy({
+            where: {
+                id: -1
+            }
+        })
+        .then(() => done())
+        .catch(err => logger.error(err));
+    });
 
     describe('/get-users', () => {
         it('should get all users', (done) => {
@@ -24,7 +41,6 @@ describe('Account Tests', () => {
                     expect(res.body).to.be.a('array');
                     expect(res.body.length).to.be.gt(0);
                     expect(res.body[0]).to.be.a('object');
-                    console.log(res.body[0]);
                     done();
                 });
         });
@@ -33,7 +49,7 @@ describe('Account Tests', () => {
     describe('/get-user/:id', () => {
         it('should get one user by id', (done) => {
             server
-                .get('/get-user/7')
+                .get('/get-user/-1')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -47,7 +63,22 @@ describe('Account Tests', () => {
         });
     });
 
-    // describe('', function() {
+    describe('/update-account/:id', () => {
+        it('should update user account by id', (done) => {
+            let updatedTestUser = {
+                first_name: 'updatedTestFirstName',
+                last_name: 'updatedTestLastName'
+            };
+            
+            server 
+                .put('/update-account/-1')
+                .send(updatedTestUser)
+                .set('Accept', 'application/json')
+                // .expect('Content-Type', /json/)
+                .expect(200, done);
+                // .end((err, res) => {
 
-    // });
+                // });
+        });
+    });
 });

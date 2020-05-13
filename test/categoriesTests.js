@@ -2,8 +2,30 @@ const supertest = require('supertest');
 const server = supertest.agent('http://localhost:8080');
 const chai = require('chai');
 var expect = chai.expect;
+const db = require('../models');
+const logger = require('../logger');
 
 describe('Category Tests', () => {
+
+    beforeEach((done) => {
+        db.category.create({
+            id: -1,
+            category_name: 'testCategory'
+        })
+        .then(() => done())
+        .catch(err => logger.error(err));
+    });
+
+    afterEach((done) => {
+        db.category.destroy({
+            where: {
+                id: -1
+            }
+        })
+        .then(() => done())
+        .catch(err => logger.error(err));
+    });
+
     describe('/get-categories', () => {
         it('should get all categories', (done) => {
             server
@@ -24,7 +46,7 @@ describe('Category Tests', () => {
     describe('/get-category/:id', () => {
         it('should get one category by id', (done) => {
             server
-                .get('/get-category/5')
+                .get('/get-category/-1')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)

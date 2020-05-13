@@ -4,6 +4,32 @@ const chai = require('chai');
 var expect = chai.expect;
 
 describe('Chore Tests', () => {
+
+    // beforeEach((done) => {
+    //     db.chore.create({
+    //         id: -1,
+    //         chore_name: '',
+    //         status: '',
+    //         frequency_id: frequencyId,
+    //         category_id: categoryId,
+    //         assignee_id: assigneeId,
+    //         difficulty: difficulty,
+    //         notes: notes
+    //     })
+    //     .then(() => done())
+    //     .catch(err => logger.error(err));
+    // });
+
+    // afterEach((done) => {
+    //     db.category.destroy({
+    //         where: {
+    //             id: -1
+    //         }
+    //     })
+    //     .then(() => done())
+    //     .catch(err => logger.error(err));
+    // });
+
     describe('/get-chores', () => {
         it('should get all chores', (done) => {
             server
