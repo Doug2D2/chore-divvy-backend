@@ -59,7 +59,7 @@ describe('Category Tests', () => {
                     expect(res.body.length).to.be.gt(0);
                     expect(res.body[0]).to.be.a('object');
                     done();
-                });
+            });
         });
     });
 
@@ -76,7 +76,7 @@ describe('Category Tests', () => {
                     expect(res.body.length).to.equal(1);
                     expect(res.body[0]).to.be.a('object');
                     done();
-                });
+            });
         });
     });
 
@@ -118,8 +118,10 @@ describe('Category Tests', () => {
                 .end((err, res) => {
                     deleteCategoryId = res.body.id;
                     expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body.category_name).to.equal('newTestCategory');
                     done();
-                });
+            });
         });
     });
 
@@ -131,9 +133,10 @@ describe('Category Tests', () => {
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
-                    console.log(res.body);
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.equal(1);
                     done();
-                });
+            });
         });
     });
 });
