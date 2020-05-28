@@ -100,23 +100,43 @@ describe('Chore Tests', () => {
                     done();
             });
         });
+    });
 
-        describe('/delete-chore/:id', (req, res) => {
-            it('should delete a chore from the chore table', (done) => {
-                server
-                    .delete('/delete-chore/' + deleteChoreId)
-                    .set('Accept', 'application/json')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .end((err, res) => {
-                        expect(res.status).to.equal(200);
-                        expect(res.body).to.equal(1);
-                        done();
+    describe('/update-chore/:id', (req, res) => {
+        it('should update a chore by the id', (done) => {
+            let updatedChore = {
+                choreName: 'updatedTestChore',
+                status: 'Completed'
+            }
+
+            server
+                .put('/update-chore/-1')
+                .send(updatedChore)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0]).to.equal(1);
+                    done();
                 });
-            });
         });
     });
 
-
-
+    describe('/delete-chore/:id', (req, res) => {
+        it('should delete a chore from the chore table', (done) => {
+            server
+                .delete('/delete-chore/' + deleteChoreId)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.equal(1);
+                    done();
+            });
+        });
+    });
 });
