@@ -8,7 +8,7 @@ let deleteChoreId;
 
 describe('Chore Tests', () => {
 
-    beforeEach((done) => {
+    before((done) => {
         db.category.create({
             id: -2,
             category_name: 'testCategory'
@@ -26,7 +26,7 @@ describe('Chore Tests', () => {
         .catch(done, err => logger.error(err));
     });
 
-    afterEach((done) => {
+    after((done) => {
         db.chore.destroy({
             where: {
                 id: -1
@@ -41,7 +41,7 @@ describe('Chore Tests', () => {
             .then(() =>  done())
             .catch(done, err => logger.error(err));
         })
-        .catch(err => logger.error(err));
+        .catch(done, err => logger.error(err));
     });
 
     describe('/get-chores', () => {
@@ -96,7 +96,8 @@ describe('Chore Tests', () => {
                     deleteChoreId = res.body.id;
                     expect(res.status).to.equal(200);
                     expect(res.body).to.be.a('object');
-                    expect(res.body.chore_name).to.equal('newTestChore')
+                    expect(res.body.chore_name).to.equal('newTestChore');
+                    done();
             });
         });
 

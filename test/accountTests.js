@@ -7,7 +7,7 @@ const logger = require('../logger');
 
 describe('Account Tests', () => {
 
-    beforeEach((done) => {
+    before((done) => {
         db.user.create({
             id: -1,
             username: 'tester@email.com',
@@ -19,7 +19,7 @@ describe('Account Tests', () => {
         .catch(err => logger.error(err));
     });
 
-    afterEach((done) => {
+    after((done) => {
         db.user.destroy({
             where: {
                 id: -1

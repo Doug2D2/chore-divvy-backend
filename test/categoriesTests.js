@@ -8,7 +8,7 @@ let deleteCategoryId;
 
 describe('Category Tests', () => {
 
-    beforeEach((done) => {
+    before((done) => {
         db.user.create({
             id: -1,
             username: 'tester@email.com',
@@ -27,7 +27,7 @@ describe('Category Tests', () => {
         .catch(err => logger.error(err));
     });
 
-    afterEach((done) => {
+    after((done) => {
         db.category.destroy({
             where: {
                 id: -1
