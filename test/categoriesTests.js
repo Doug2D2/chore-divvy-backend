@@ -9,7 +9,6 @@ let deleteCategoryId;
 describe('Category Tests', () => {
 
     beforeEach((done) => {
-
         db.user.create({
             id: -1,
             username: 'tester@email.com',
