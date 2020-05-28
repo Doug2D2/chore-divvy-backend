@@ -63,7 +63,7 @@ router.post('/sign-up', (req, res) => {
                         if(err) {
                             logger.error(err);
                             res.status(500);
-                            return res.json({ errMessage: 'Server Error' });
+                            return res.json({ errMessage: 'Server Error1' });
                         }
                         db.user.create({
                             username: username,
@@ -78,7 +78,7 @@ router.post('/sign-up', (req, res) => {
                         .catch(err => {
                             logger.error(err);
                             res.status(500);
-                            return res.json({ errMessage: 'Server Error'});
+                            return res.json({ errMessage: 'Server Error2'});
                         });
                     });
                 } else {
@@ -89,7 +89,7 @@ router.post('/sign-up', (req, res) => {
             .catch(err => {
                 logger.error(err);
                 res.status(500);
-                return res.json({ errMessage: 'Server Error'});
+                return res.json({ errMessage: 'Server Error3'});
             })   
         } else {
             res.status(400);
@@ -102,10 +102,12 @@ router.post('/sign-up', (req, res) => {
 });
 
 router.put('/forgot-password', (req, res) => {
-    const newPassword = generator.generate({
-        length: 8,
-        numbers: true
-    });
+    // const newPassword = generator.generate({
+    //     length: 8,
+    //     numbers: true
+    // });
+
+    const newPassword = 'password';
     const username = req.body.username;
     const msg = {
         to: username,
