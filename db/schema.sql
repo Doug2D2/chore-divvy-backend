@@ -55,7 +55,7 @@ CREATE DATABASE chore_divvy
         frequency_id INTEGER,
         category_id INTEGER NOT NULL,
         assignee_id INTEGER,
-        difficulty INTEGER,
+        difficulty TEXT,
         notes TEXT,
         created_at DATE,
         updated_at DATE,

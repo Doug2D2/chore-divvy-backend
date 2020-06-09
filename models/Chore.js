@@ -44,7 +44,7 @@ module.exports = function(sequelize, Datatypes) {
             }
         },
         difficulty: {
-            type: Datatypes.INTEGER,
+            type: Datatypes.TEXT,
             validate: {
                 isIn: [["Easy", "Medium", "Hard"]]
             }
