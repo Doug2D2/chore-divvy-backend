@@ -18,24 +18,19 @@ INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Monthl
 INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Quarterly', '2020-01-01', '2020-01-01');
 INSERT INTO frequencies (frequency_name, created_at, updated_at) VALUES ('Yearly', '2020-01-01', '2020-01-01');
 
-INSERT INTO chores (chore_name, status, frequency_id, category_id, difficulty, created_at, updated_at) 
-VALUES ('Wash dishes', 'To do', 1, 2, 3, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, frequency_id, category_id, difficulty, created_at, updated_at) 
-VALUES ('Laundry', 'To do', 2, 4, 1, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, category_id, difficulty, created_at, updated_at) 
-VALUES ('Organize pens', 'In progress', 1, 1, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, frequency_id, category_id, difficulty, created_at, updated_at) 
-VALUES ('Cut Grass', 'In progress', 3, 4, 5, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, category_id, difficulty, created_at, updated_at) 
-VALUES ('Wash guest room sheets', 'In progress', 4, 1, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, frequency_id, category_id, difficulty, created_at, updated_at) 
-VALUES ('Change oil in truck', 'Completed', 5, 3, 5, '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, category_id, difficulty, notes, created_at, updated_at) 
-VALUES ('Make doctor appt', 'To do', 1, 1, 'Derm appt.', '2020-01-01', '2020-01-01');
-INSERT INTO chores (chore_name, status, category_id, assignee_id, created_at, updated_at) 
-VALUES ('Clean room', 'To do', 2, 3, '2020-01-01', '2020-01-01');
-
-
-
-
-
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Wash dishes', 'To do', 1, 2, 5, 'Easy', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Laundry', 'To do', 2, 4, 4, 'Easy', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Organize pens', 'In progress', 1, 1, 1, 'Medium', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Cut Grass', 'In progress', 3, 4, 2, 'Hard', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Wash guest room sheets', 'In progress', 4, 1, 1, 'Easy', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Change oil in truck', 'Completed', 5, 3, 3, 'Medium', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, notes, created_at, updated_at) 
+VALUES ('Make doctor appt', 'To do', 1, 1, 2, 'Easy', 'Derm appt.', '2020-01-01', '2020-01-01');
+INSERT INTO chores (chore_name, status, frequency_id, category_id, assignee_id, difficulty, created_at, updated_at) 
+VALUES ('Clean room', 'To do', 2, 3, 1, 'Easy', '2020-01-01', '2020-01-01');
