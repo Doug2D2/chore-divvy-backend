@@ -25,7 +25,10 @@ db.sequelize
     .sync({ alter: true })
     .then(() => {
         app.listen(8080, function() {
-            console.log('server running on port 3000');
+            console.log('server running on port 8080');
         });
     })
     .catch(err => logger.error(err));
+
+module.exports = app;
+
