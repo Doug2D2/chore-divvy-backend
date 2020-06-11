@@ -11,6 +11,7 @@ const categoryRoutes = require('./controllers/categories');
 const choreRoutes = require('./controllers/chores');
 const loginRoutes = require('./controllers/login');
 const accountRoutes = require('./controllers/account');
+const frequencyRoutes = require('./controllers/frequency');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use(categoryRoutes);
 app.use(choreRoutes);
 app.use(loginRoutes);
 app.use(accountRoutes);
+app.use(frequencyRoutes);
 
 db.sequelize
     .sync({ alter: true })
