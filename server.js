@@ -11,6 +11,7 @@ const categoryRoutes = require('./controllers/categories');
 const choreRoutes = require('./controllers/chores');
 const loginRoutes = require('./controllers/login');
 const accountRoutes = require('./controllers/account');
+const frequencyRoutes = require('./controllers/frequency');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -20,12 +21,16 @@ app.use(categoryRoutes);
 app.use(choreRoutes);
 app.use(loginRoutes);
 app.use(accountRoutes);
+app.use(frequencyRoutes);
 
 db.sequelize
     .sync({ alter: true })
     .then(() => {
         app.listen(8080, function() {
-            console.log('server running on port 3000');
+            console.log('server running on port 8080');
         });
     })
     .catch(err => logger.error(err));
+
+module.exports = app;
+
