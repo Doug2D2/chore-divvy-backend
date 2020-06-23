@@ -3,23 +3,6 @@ const router = express.Router();
 const db = require('../models');
 const logger = require('../logger');
 
-router.get('/get-chores', (req, res) => {
-    db.chore.findAll({
-        order: [
-            ['createdAt', 'DESC']
-        ]
-    })
-    .then(data => {
-        res.status(200);
-        return res.json(data);
-    })
-    .catch(err => {
-        logger.error(err);
-        res.status(500);
-        return res.json({ errMessage: 'Server Error' });
-    });
-});
-
 router.get('/get-chore/:id', (req, res) => {
     const choreId = req.params.id;
 
