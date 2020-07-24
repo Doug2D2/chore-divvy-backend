@@ -94,7 +94,7 @@ router.post('/add-chore', (req, res) => {
 
 router.put('/update-chore/:id', (req, res) => {
     const id = req.params.id;
-    const {
+    let {
         choreName, 
         status, 
         frequencyId,
@@ -103,7 +103,12 @@ router.put('/update-chore/:id', (req, res) => {
         difficulty, 
         notes } = req.body;
 
-
+    // If assigneeId is -1 then the chore is unassigned and 
+    // should be set to null 
+    if (assigneeId == -1) {
+        assigneeId = null
+    }
+    
     db.chore.update({
             chore_name: choreName,
             status: status,
