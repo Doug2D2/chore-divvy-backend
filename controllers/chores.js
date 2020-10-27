@@ -64,17 +64,17 @@ router.post('/add-chore', (req, res) => {
     const { 
         choreName, 
         status, 
+        dateComplete,
         frequencyId,
         categoryId, 
         assigneeId, 
         difficulty, 
         notes } = req.body;
-    //Will this be calculated on backend and saved when 'complete' box checked?
-    // const dateCompleteInput = req.body.date_complete;
     
     db.chore.create({
         chore_name: choreName,
         status: status,
+        date_complete: dateComplete,
         frequency_id: frequencyId,
         category_id: categoryId,
         assignee_id: assigneeId,
