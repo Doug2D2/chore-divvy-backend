@@ -85,10 +85,7 @@ router.post('/sign-up', (req, res) => {
                                 logger.error(err);
                                 res.status(500);
                                 return res.json({ errMessage: 'Server Error' });
-                            })
-
-                            res.status(200);
-                            res.json(data);
+                            }) 
                         })
                         .catch(err => {
                             logger.error(err);
