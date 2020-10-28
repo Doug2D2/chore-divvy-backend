@@ -72,6 +72,21 @@ router.post('/sign-up', (req, res) => {
                             last_name: lastName
                         })
                         .then(data => {
+                            //Create default category for new user
+                            db.category.create({
+                                category_name: 'My Chores',
+                                user_id: [data.id]
+                            })
+                            .then(defaultCategory => {
+                               res.status(200);
+                               return res.json(data);
+                            })
+                            .catch(err => {
+                                logger.error(err);
+                                res.status(500);
+                                return res.json({ errMessage: 'Server Error' });
+                            })
+
                             res.status(200);
                             res.json(data);
                         })
