@@ -77,7 +77,7 @@ router.post('/sign-up', (req, res) => {
                                 category_name: 'My Chores',
                                 user_id: [data.id]
                             })
-                            .then(data => {
+                            .then(defaultCategory => {
                                res.status(200);
                                return res.json(data);
                             })
