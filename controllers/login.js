@@ -6,6 +6,7 @@ const generator = require('generate-password');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_APIKEY);
 const bcrypt = require('bcrypt');
+const Sequelize = require('sequelize');
 
 router.post('/login', (req, res) => {
     const usernameInput = req.body.username;
@@ -13,7 +14,9 @@ router.post('/login', (req, res) => {
 
     db.user.findAll({
         where: {
-            username: usernameInput
+            username: {
+                [Sequelize.Op.iLike]: '%' + usernameInput
+            }
         }
     })
     .then(data => {
