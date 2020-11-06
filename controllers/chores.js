@@ -16,7 +16,7 @@ router.get('/get-chores-by-userId/:userId', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-chores-by-userId', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -35,7 +35,7 @@ router.get('/get-chores-by-categoryId/:categoryId', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-chores-by-categoryId', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -54,7 +54,7 @@ router.get('/get-chore-by-id/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-chore-by-id', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -86,7 +86,7 @@ router.post('/add-chore', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('POST /add-chore', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     })
@@ -128,7 +128,7 @@ router.put('/update-chore/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('PUT /update-chore', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -147,7 +147,7 @@ router.delete('/delete-chore/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('DELETE /delete-chore', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
