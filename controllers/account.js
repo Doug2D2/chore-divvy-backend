@@ -11,7 +11,7 @@ router.get('/get-users', (req, res) => {
          return res.json(data);
      })
      .catch(err => {
-         logger.error(err);
+         logger.error('GET /get-users', err);
          res.status(500);
          return res.json({ errMessage: 'Server Error' });
      });
@@ -30,7 +30,7 @@ router.get('/get-user/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-user', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -67,7 +67,7 @@ router.put('/update-account/:id', async (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('PUT /update-account', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });

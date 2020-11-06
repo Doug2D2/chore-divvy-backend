@@ -11,7 +11,7 @@ router.get('/get-categories', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-categories', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -32,7 +32,7 @@ router.get('/get-categories-by-userId/:userId', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-categories-by-userId', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -51,7 +51,7 @@ router.get('/get-category/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('GET /get-category', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -72,7 +72,7 @@ router.post('/add-category', (req, res) => {
         return res.json(data);
      })
      .catch(err => {
-         logger.error(err);
+         logger.error('POST /add-category', err);
          res.status(500);
          return res.json({ errMessage: 'Server Error' });
      })
@@ -98,7 +98,7 @@ router.put('/update-category/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('PUT /update-category', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     });
@@ -117,7 +117,7 @@ router.delete('/delete-category/:id', (req, res) => {
         return res.json(data);
     })
     .catch(err => {
-        logger.error(err);
+        logger.error('DELETE /delete-category', err);
         res.status(500);
         return res.json({ errMessage: 'Server Error' });
     })

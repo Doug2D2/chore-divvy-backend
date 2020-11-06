@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
 
         bcrypt.compare(passwordInput, pw, function(err, result) {
             if(err) {
-                logger.error(err);
+                logger.error('POST "/login": Error hashing password', err);
                 res.status(500);
                 return res.json({ errMessage: 'Server Error' });
             }
@@ -42,7 +42,7 @@ router.post('/login', (req, res) => {
         });
     })
     .catch(err => { 
-        logger.error(err);
+        logger.error('POST "/login": Error finding username', err);
         res.sendStatus(500);
         return res.json({errMessage: 'Server Error' });
     });
@@ -64,9 +64,9 @@ router.post('/sign-up', (req, res) => {
                 if (data.length === 0) {
                     bcrypt.hash(password, 10, function(err, hash) {
                         if(err) {
-                            logger.error(err);
+                            logger.error('POST "/sign-up": Error hashing password', err);
                             res.status(500);
-                            return res.json({ errMessage: 'Server Error1' });
+                            return res.json({ errMessage: 'Server Error' });
                         }
                         db.user.create({
                             username: username,
@@ -85,15 +85,15 @@ router.post('/sign-up', (req, res) => {
                                return res.json(data);
                             })
                             .catch(err => {
-                                logger.error(err);
+                                logger.error('POST /sign-up: Error creating default category for new user', err);
                                 res.status(500);
                                 return res.json({ errMessage: 'Server Error' });
                             }) 
                         })
                         .catch(err => {
-                            logger.error(err);
+                            logger.error('POST /sign-up: Error creating new user', err);
                             res.status(500);
-                            return res.json({ errMessage: 'Server Error2'});
+                            return res.json({ errMessage: 'Server Error'});
                         });
                     });
                 } else {
@@ -102,9 +102,9 @@ router.post('/sign-up', (req, res) => {
                 }
             })
             .catch(err => {
-                logger.error(err);
+                logger.error('POST /sign-up: Error finding username', err);
                 res.status(500);
-                return res.json({ errMessage: 'Server Error3'});
+                return res.json({ errMessage: 'Server Error'});
             })   
         } else {
             res.status(400);
@@ -137,7 +137,7 @@ router.put('/forgot-password', (req, res) => {
       if(isEmailAddressValid) {
           bcrypt.hash(newPassword, 10, function(err, hash) {
             if(err) {
-                logger.error(err);
+                logger.error('PUT /forgot-password: Error hashing password', err);
                 res.status(500);
                 return res.json({ errMessage: 'Server Error' });
             }
@@ -151,7 +151,7 @@ router.put('/forgot-password', (req, res) => {
             .then(data => {
                 if(data.length === 0 || data[0] === 0) {
                     res.status(400);
-                    logger.error(`Username ${username} doesn't exist.`);
+                    logger.error(`PUT /forgot-password: Username ${username} doesn't exist.`);
                     return res.json({ errMessage: `Username ${username} doesn't exist.` });
                 } 
         
@@ -163,12 +163,12 @@ router.put('/forgot-password', (req, res) => {
                     })
                     .catch((err) => {
                         res.status(500);
-                        logger.error(err);
+                        logger.error('PUT /forgot-password: Unable to send email', err);
                         return res.json({ errMessage: 'Unable to send email.' });
                     });
             })
             .catch(err => {
-                logger.error(err);
+                logger.error('PUT /forgot-password: Unable to update password', err);
                 res.status(500);
                 return res.json({ errMessage: 'Server Error' });
             })
